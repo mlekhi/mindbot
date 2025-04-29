@@ -1,18 +1,18 @@
 # MindBot: Mind-Controlled Bracket Bot 
 
-control a [BracketBot](https://www.bracket.bot/) using mental commands detected by the Emotiv EPOC X headset. streamed through Emotiv's Cortex API, and delivered via MQTT over wi-fi :)
+control a [BracketBot](https://www.bracket.bot/) using mental commands detected by the Emotiv EPOC X headset. streamed through emotiv's cortex API, and delivered via MQTT over wi-fi :)
 
 
 ---
 
 ## Requirements
 
-- Bracket Bot
-- Emotiv Developer Account with API access (Pro or Pro Trial)
-- Emotiv EPOC X headset
-- Mosquitto broker installed and running on Pi
-- Emotiv Launcher installed and running on Mac
-- CortexService running on Mac (check port 6868)
+- bracket bot
+- emotiv developer account with API access (Pro or Pro Trial)
+- emotiv EPOC X headset
+- mosquitto broker installed and running on pi
+- emotiv Launcher installed and running on mac
+- cortexService running on mac (check port 6868)
 
 ---
 
