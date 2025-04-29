@@ -7,8 +7,6 @@ import json
 import ssl
 import paho.mqtt.client as mqtt
 
-# Make sure cortex-example is in path
-sys.path.append(os.path.abspath("cortex-example/python"))
 from cortex import Cortex
 
 # ------------------------------------------------------------------------------------
