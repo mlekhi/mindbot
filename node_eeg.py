@@ -12,8 +12,8 @@ from cortex import Cortex
 # ------------------------------------------------------------------------------------
 # Config
 # ------------------------------------------------------------------------------------
-PROFILE_NAME = "Amit-BB"  # Your trained profile
-MQTT_BROKER_ADDRESS = "192.168.0.168"  # Your Pi's IP address
+PROFILE_NAME = "profile"  # trained profile
+MQTT_BROKER_ADDRESS = "192.168.0.168"  # Raspberry Pi's IP address
 MQTT_TOPIC = "robot/drive"
 
 CORTEX_CREDS = {
@@ -64,7 +64,7 @@ async def main():
     await bot_brain.setup_profile(PROFILE_NAME, status="load")
     await bot_brain.start(["mentalCommand"])
 
-    print("✅ Now streaming mental commands to MQTT!")
+    print("Streaming mental commands to MQTT!")
     
     while True:
         await asyncio.sleep(1)
@@ -76,7 +76,7 @@ if __name__ == "__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        print("\n🛑 Stopping stream...")
+        print("\nStopping stream...")
         mqtt_client.publish(MQTT_TOPIC, "stop")
         mqtt_client.loop_stop()
         mqtt_client.disconnect()
