@@ -1,6 +1,6 @@
 # MindBot: Mind-Controlled Bracket Bot 
 
-control a [BracketBot](https://www.bracket.bot/) using mental commands detected by the Emotiv EPOC X headset. streamed through emotiv's cortex API, and delivered via MQTT over wi-fi :)
+control a [bracket bot](https://www.bracket.bot/) using mental commands detected by the Emotiv EPOC X headset. streamed through emotiv's cortex API, and delivered via MQTT over wi-fi :)
 
 
 ---
