@@ -23,7 +23,7 @@ note: go through [quickstart](https://github.com/BracketBotCapstone/quickstart) 
 
 ### 1. Raspberry Pi Setup
 
-- install Mosquitto MQTT broker:
+- install mosquitto MQTT broker:
 
 ```bash
 sudo apt update
@@ -32,7 +32,7 @@ sudo systemctl enable mosquitto
 sudo systemctl start mosquitto
 ```
 
-- run the motor control script (`node_drive.py`) on Pi:
+- run the motor control script (`node_drive.py`) on raspberry pi:
 
 ```bash
 python3 node_drive.py
@@ -51,9 +51,9 @@ pip install -r requirements.txt
 
 ### 3. Emotiv Setup
 
-- connect EPOC X headset via Bluetooth in Emotiv Launcher
+- connect EPOC X headset via bluetooth in emotiv launcher
 - create a trained profile with mental commands like "push" and "neutral"
-- grant Cortex API access (should pop up when script requests access)
+- grant cortex API access (should pop up when script requests access)
 
 ### 4. Running the System
 
@@ -63,7 +63,7 @@ pip install -r requirements.txt
 python3 mental_command_mqtt.py
 ```
 
-this connects to Emotiv, streams mental commands, and publishes over MQTT
+this connects to emotiv, streams mental commands, and publishes over MQTT
 
 - press "push" mentally → **robot drives forward**
 - relax to "neutral" → **robot stops**
@@ -75,11 +75,11 @@ this connects to Emotiv, streams mental commands, and publishes over MQTT
 
 | Symptom | Fix |
 |---------|-----|
-| no headset detected in script | restart Emotiv Launcher and CortexService |
-| no authorization popup | restart Launcher, check API access |
-| "auth missing" error | you must have Emotiv Pro or Trial API access |
-| "connection refused" on MQTT | fix Mosquitto config to listen globally |
-| commands not moving robot | check ODrive connection and set_velocity() logs |
+| no headset detected in script | restart emotiv launcher and cortexService |
+| no authorization popup | restart launcher, check API access |
+| "auth missing" error | you must have emotiv Pro or Trial API access |
+| "connection refused" on MQTT | fix mosquitto config to listen globally |
+| commands not moving robot | check odrive connection and set_velocity() logs |
 
 ---
 
