@@ -2,6 +2,7 @@
 
 control a [BracketBot](https://www.bracket.bot/) using mental commands detected by the Emotiv EPOC X headset. streamed through Emotiv's Cortex API, and delivered via MQTT over wi-fi :)
 
+
 ---
 
 ## Requirements
@@ -14,6 +15,7 @@ control a [BracketBot](https://www.bracket.bot/) using mental commands detected 
 - CortexService running on Mac (check port 6868)
 
 ---
+
 
 ## Setup
 
@@ -40,11 +42,11 @@ python3 node_drive.py
 
 ### 2. Mac Setup
 
+- clone repository locally
 - install dependencies:
 
 ```bash
-brew install mosquitto
-pip install paho-mqtt sshkeyboard websockets
+pip install -r requirements.txt
 ```
 
 ### 3. Emotiv Setup
@@ -67,6 +69,7 @@ this connects to Emotiv, streams mental commands, and publishes over MQTT
 - relax to "neutral" → **robot stops**
 
 ---
+
 
 ## Troubleshooting (i've been through it all)
 
