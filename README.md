@@ -11,7 +11,7 @@ control a [BracketBot](https://www.bracket.bot/) using mental commands detected 
 - emotiv developer account with API access (Pro or Pro Trial)
 - emotiv EPOC X headset
 - mosquitto broker installed and running on pi
-- emotiv Launcher installed and running on mac
+- emotiv launcher + emotiv BCI installed and running on mac
 - cortexService running on mac (check port 6868)
 
 ---
