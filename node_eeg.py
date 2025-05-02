@@ -28,53 +28,82 @@ mqtt_client = mqtt.Client()
 mqtt_client.connect(MQTT_BROKER_ADDRESS)
 mqtt_client.loop_start()
 
+
 # ------------------------------------------------------------------------------------
 # Cortex Brain class
 # ------------------------------------------------------------------------------------
-class BracketBotBrain(Cortex):
-    async def on_mental_command(self, *args, **kwargs):
-        action = kwargs['data'][0]['action']
-        power = kwargs['data'][0]['power']
-        print(f"[EEG] Command Detected: {action} (Power: {power:.2f})")
+class MCListener(Cortex):
+    def __init__(self, client_id, client_secret):
+        super().__init__(client_id, client_secret, debug_mode=False)
+        self.session_id = None
+        self.set_wanted_headset(WANTED_HEADSET_ID)
+        self.set_wanted_profile(PROFILE_NAME)
+        self.bind(create_session_done=self.on_session)
+        self.bind(load_unload_profile_done=self.on_profile_loaded)
+        self.bind(new_com_data=self.on_com)
 
-        if action == "push":
-            print("Sending: forward")
-            mqtt_client.publish(MQTT_TOPIC, "forward")
-        elif action == "neutral":
-            print("Sending: stop")
-            mqtt_client.publish(MQTT_TOPIC, "stop")
+    def on_session(self, *args, **kwargs):
+        self.session_id = kwargs.get("data")
+        self.setup_profile(PROFILE_NAME, status="load")
+
+    def on_profile_loaded(self, *args, **kwargs):
+        self.set_mental_command_active_action(["neutral", "push"])
+        self.sub_request(["com"])
+
+    def on_com(self, *args, **kwargs):
+        data = kwargs.get("data")
+        if data:
+            action = data["action"]
+            power = data["power"]
+            print(f"{action.upper()} ({power:.2f})")
+            if action == "push":
+                print("SENDING: forward")
+                mqtt_client.publish(MQTT_TOPIC, "forward")
+            elif action == "neutral":
+                print("SENDING: stop")
+                mqtt_client.publish(MQTT_TOPIC, "stop")
+            else:
+                print("unexpected action")
 
 # ------------------------------------------------------------------------------------
 # Main
 # ------------------------------------------------------------------------------------
 async def main():
-    bot_brain = BracketBotBrain(
-        client_id=CORTEX_CREDS["client_id"],
-        client_secret=CORTEX_CREDS["client_secret"],
-        license=CORTEX_CREDS["license"],
-        debit=CORTEX_CREDS["debit"]
-    )
+    listener = MCListener(CLIENT_ID, CLIENT_SECRET)
+    threading.Thread(target=listener.open, daemon=True).start()
+    await asyncio.sleep(1)
 
-    bot_brain.open()
-    await bot_brain.request_access()
-    await bot_brain.authorize()
-    await bot_brain.query_headsets()
-    await bot_brain.setup_profile(PROFILE_NAME, status="load")
-    await bot_brain.start(["mentalCommand"])
+    listener.request_access()
+    await asyncio.sleep(2)
+    listener.authorize()
+    await asyncio.sleep(2)
 
-    print("Streaming mental commands to MQTT!")
-    
-    while True:
+    for _ in range(10):
+        listener.query_headset()
         await asyncio.sleep(1)
+        if listener.headset_id and listener.isHeadsetConnected:
+            break
+
+    if not listener.headset_id or not listener.isHeadsetConnected:
+        print("❌ no headset connected.")
+        return
+
+    listener.control_device("connect", listener.headset_id)
+    await asyncio.sleep(2)
+    listener.create_session()
+    await asyncio.sleep(2)
+
+    print("listening for mental commands. press ctrl + c to exit.")
+    try:
+        while True:
+            await asyncio.sleep(1)
+    except KeyboardInterrupt:
+        listener.close()
+        mqtt_client.loop_stop()
 
 # ------------------------------------------------------------------------------------
 # Entry point
 # ------------------------------------------------------------------------------------
+
 if __name__ == "__main__":
-    try:
-        asyncio.run(main())
-    except KeyboardInterrupt:
-        print("\nStopping stream...")
-        mqtt_client.publish(MQTT_TOPIC, "stop")
-        mqtt_client.loop_stop()
-        mqtt_client.disconnect()
+    asyncio.run(main())
