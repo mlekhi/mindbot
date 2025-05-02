@@ -28,7 +28,6 @@ mqtt_client = mqtt.Client()
 mqtt_client.connect(MQTT_BROKER_ADDRESS)
 mqtt_client.loop_start()
 
-
 # ------------------------------------------------------------------------------------
 # Cortex Brain class
 # ------------------------------------------------------------------------------------
