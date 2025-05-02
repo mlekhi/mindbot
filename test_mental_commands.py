@@ -2,7 +2,6 @@
 
 import json
 import sys, os, asyncio, threading
-sys.path.append(os.path.abspath("cortex-example/python"))
 from cortex import Cortex
 
 CLIENT_ID = "client_id"  # replace with ID
