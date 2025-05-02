@@ -12,16 +12,14 @@ from cortex import Cortex
 # ------------------------------------------------------------------------------------
 # Config
 # ------------------------------------------------------------------------------------
-PROFILE_NAME = "profile"  # trained profile
-MQTT_BROKER_ADDRESS = "192.168.0.168"  # Raspberry Pi's IP address
+MQTT_BROKER_ADDRESS = "192.168.0.168"  # raspberry Pi's IP address
 MQTT_TOPIC = "robot/drive"
 
-CORTEX_CREDS = {
-    "client_id": "your-client-id",
-    "client_secret": "your-client-secret",
-    "license": "",
-    "debit": 100
-}
+PROFILE_NAME = "profile"  # trained profile
+WANTED_HEADSET_ID = "EPOCX-X#######X"  # OPTIONAL: specify headset ID to use. if empty, it will use the first available.
+
+CLIENT_ID = "client_id"  # replace with ID
+CLIENT_SECRET = "client_secret"  # replace with secret
 
 # ------------------------------------------------------------------------------------
 # Setup MQTT
