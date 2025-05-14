@@ -60,7 +60,7 @@ pip install -r requirements.txt
 - launch `node_eeg.py` on your mac
 
 ```bash
-python3 mental_command_mqtt.py
+python3 node_eeg.py
 ```
 
 this connects to emotiv, streams mental commands, and publishes over MQTT
