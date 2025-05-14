@@ -35,34 +35,46 @@ class MCListener(Cortex):
     def __init__(self, client_id, client_secret):
         super().__init__(client_id, client_secret, debug_mode=False)
         self.session_id = None
-        self.set_wanted_headset(WANTED_HEADSET_ID)
-        self.set_wanted_profile(PROFILE_NAME)
         self.bind(create_session_done=self.on_session)
-        self.bind(load_unload_profile_done=self.on_profile_loaded)
         self.bind(new_com_data=self.on_com)
 
     def on_session(self, *args, **kwargs):
         self.session_id = kwargs.get("data")
+        print("✅ Session created, loading profile...")
         self.setup_profile(PROFILE_NAME, status="load")
-
-    def on_profile_loaded(self, *args, **kwargs):
-        self.set_mental_command_active_action(["neutral", "push"])
+        self.set_mental_command_active_action(["neutral", "push", "pull", "left", "right"])
         self.sub_request(["com"])
 
     def on_com(self, *args, **kwargs):
+        print("on_com triggered")
         data = kwargs.get("data")
         if data:
+            print(f"Raw mental command data received: {data}")
             action = data["action"]
             power = data["power"]
-            print(f"{action.upper()} ({power:.2f})")
+            print(f"🧠 {action.upper()} ({power:.2f})")
             if action == "push":
                 print("SENDING: forward")
                 mqtt_client.publish(MQTT_TOPIC, "forward")
+                print("✅ MQTT: Sent 'forward'")
             elif action == "neutral":
                 print("SENDING: stop")
                 mqtt_client.publish(MQTT_TOPIC, "stop")
+                print("✅ MQTT: Sent 'stop'")
             else:
                 print("unexpected action")
+
+    def control_device(self, command, headset_id=None):
+        params = {"command": command}
+        if headset_id:
+            params["headset"] = headset_id
+        self.ws.send(json.dumps({
+            "jsonrpc": "2.0",
+            "id": 99,
+            "method": "controlDevice",
+            "params": params
+        }))
+
 
 # ------------------------------------------------------------------------------------
 # Main
