@@ -19,7 +19,7 @@ control a [bracket bot](https://www.bracket.bot/) using mental commands detected
 
 ## Setup
 
-note: go through [quickstart](https://github.com/BracketBotCapstone/quickstart) for bracket bot prior to following these instructions
+note: go through [quickstart](https://github.com/BracketBotCapstone/quickstart) for bracket bot prior to following these instructions. this repo is meant to be used on top of the [nodes](https://github.com/mlekhi/quickstart/tree/main/core) provided in the existing bracket bot documentation. 
 
 ### 1. Raspberry Pi Setup
 
@@ -32,7 +32,7 @@ sudo systemctl enable mosquitto
 sudo systemctl start mosquitto
 ```
 
-- run the motor control script (`node_drive.py`) on raspberry pi:
+- run the motor control script (`node_drive.py`) on raspberry pi (found in [bracket bot quickstart](https://github.com/mlekhi/quickstart/tree/main/core)):
 
 ```bash
 python3 node_drive.py
